@@ -1,0 +1,48 @@
+{% extends '../base.html' %}
+
+{% block content %}
+
+{#    {% for field in form %}#}
+{#        <p>label: {{ field.label }}</p>#}
+{#        <p>name: {{ field.name }}</p>#}
+{#        <p>id_for_label: {{ filed.id_for_label }}</p>#}
+{#        <p>input_type: {{ field.field.widget.input_type }}</p>#}
+{#    {% endfor %}#}
+
+
+    <div class="container my-5">
+        <form action="{% url 'board:create' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in form %}
+                {% if field.name == 'content' %}
+                    <div class="mb-3">
+                        <label for="content" class="form-label">Content</label>
+                        <textarea class="form-control" id="content" rows="3" name="content" placeholder="content"></textarea>
+                    </div>
+                {% else %}
+{#                    {{ field.field.widget.attrs }}#}
+                    <div class="mb-3">
+                        <label for="{{ field.name }}" class="form-label">{{ field.name }}</label>
+                        <input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.name }}"
+                               placeholder="{{ field.name }}" name="{{ field.name }}">
+                    </div>
+                {% endif %}
+                {% if field.errors %}
+                    {{ field.errors }}
+                {% endif %}
+
+            {% endfor %}
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+            {% if form.errors %}
+                {% if form.non_field_errors %}
+                    {{ form.errors }}
+                {% endif %}
+            {% endif %}
+
+        </form>
+    </div>
+
+
+{% endblock %}

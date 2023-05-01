@@ -1,0 +1,43 @@
+{% extends '../base.html' %}
+
+{% block content %}
+
+    <div class="container my-5">
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in form %}
+                {% if field.name == 'content' %}
+                    <div class="mb-3">
+                        <label for="content" class="form-label">Content</label>
+                        <textarea class="form-control" id="content" rows="3" name="content"
+                                  placeholder="content">{{ board.content }}</textarea>
+                    </div>
+                {% else %}
+                    {% if field.name == 'upload' %}
+                        {% if board.image %}
+                            <div class="mb-3">
+                                <p>현재 이미지</p>
+                                <img src="{{ board.image.url }}" alt="" style="width:100px">
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                    <div class="mb-3">
+                        <label for="{{ field.name }}" class="form-label">{{ field.name }}</label>
+                        <input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.name }}"
+                               placeholder="{{ field.name }}" name="{{ field.name }}"
+                               value="{% if field.name == 'title' %}{{ board.title }}{% endif %}">
+                    </div>
+                {% endif %}
+                {% if field.errors %}
+                    {{ field.errors }}
+                {% endif %}
+            {% endfor %}
+            <div class="d-flex">
+                <button type="button" class="btn btn-outline-primary" onclick="history.back()">뒤로가기</button>
+                <button type="submit" class="ms-2 btn btn-info flex-grow-1">Update</button>
+            </div>
+        </form>
+    </div>
+
+
+{% endblock %}

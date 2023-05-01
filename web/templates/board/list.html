@@ -1,0 +1,24 @@
+{% extends '../base.html' %}
+
+{% block content %}
+    <div class="container my-5">
+        <h2 class="fw-bold">Hex Board List</h2>
+        <hr>
+        <ul class="py-3">
+            {% for board in boards %}
+                <li class="py-1">
+                    <a href="{% url 'board:detail' board.id %}">
+                        <h3>{{ board.title }}</h3>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+        {% if is_paginated %}
+            {% include 'common/pagination.html' %}
+        {% endif %}
+
+        <div class="my-5">
+            <a href="{% url 'board:create' %}" class="btn btn-primary w-100">Post</a>
+        </div>
+    </div>
+{% endblock %}

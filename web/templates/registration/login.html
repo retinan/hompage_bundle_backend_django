@@ -1,0 +1,36 @@
+{% extends '../base.html' %}
+
+
+{% block content %}
+     <div class="container py-5">
+        {% if user.is_active %}
+            <h2>{{ user.username }}</h2>
+            <a href="{% url 'accounts:logout' %}" class="btn btn-warning">로그아웃</a>
+        {% else %}
+
+            <h3>로그인</h3>
+            <hr>
+            <form action="" method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="mb-3">
+                        <label for="{{ field.name }}" class="form-label">{{ field.name }}</label>
+                        <input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.name }}"
+                               name="{{ field.name }}">
+                    </div>
+                    {% if field.errors %}
+                        {{ field.errors }}
+                    {% endif %}
+                {% endfor %}
+                <button type="submit" class="btn btn-primary">Submit</button>
+
+                {% if form.errors %}
+                    {% if form.non_field_errors %}
+                    {{ form.errors }}
+                    {% endif %}
+                {% endif %}
+            </form>
+         {% endif %}
+
+    </div>
+{% endblock %}
